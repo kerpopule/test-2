@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Neon Tip Split</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --neon-cyan: #00f5ff;
+      --neon-magenta: #ff00ff;
+      --neon-green: #39ff14;
+      --neon-yellow: #ffff00;
+      --dark-bg: #0a0a0f;
+      --card-bg: #12121a;
+      --input-bg: #1a1a25;
+    }
+
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      background: var(--dark-bg);
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 20px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      font-size: 2rem;
+      margin: 20px 0 30px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-cyan));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 3s linear infinite;
+      text-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+    }
+
+    @keyframes shimmer {
+      to { background-position: 200% center; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(0, 245, 255, 0.1);
+      box-shadow: 
+        0 0 20px rgba(0, 245, 255, 0.05),
+        inset 0 0 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrapper span {
+      position: absolute;
+      left: 15px;
+      font-size: 1.5rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan);
+    }
+
+    input[type="number"] {
+      width: 100%;
+      background: var(--input-bg);
+      border: 2px solid rgba(0, 245, 255, 0.2);
+      border-radius: 12px;
+      padding: 15px 15px 15px 45px;
+      font-size: 1.5rem;
+      font-family: 'Orbitron', sans-serif;
+      color: #fff;
+      outline: none;
+      transition: all 0.3s ease;
+      -moz-appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 20px rgba(0, 245, 255, 0.3);
+    }
+
+    .tip-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .tip-btn {
+      background: var(--input-bg);
+      border: 2px solid rgba(255, 0, 255, 0.2);
+      border-radius: 12px;
+      padding: 12px 5px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tip-btn:hover {
+      border-color: var(--neon-magenta);
+      color: #fff;
+    }
+
+    .tip-btn.active {
+      background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 245, 255, 0.2));
+      border-color: var(--neon-magenta);
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+    }
+
+    .custom-tip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .custom-tip label {
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    .custom-tip input {
+      flex: 1;
+      padding: 10px 15px;
+      font-size: 1.2rem;
+    }
+
+    .people-control {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--input-bg);
+      border-radius: 12px;
+      padding: 10px 15px;
+      border: 2px solid rgba(57, 255, 20, 0.2);
+    }
+
+    .people-control:hover {
+      border-color: var(--neon-green);
+    }
+
+    .people-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(57, 255, 20, 0.2), rgba(0, 245, 255, 0.2));
+      border: 2px solid var(--neon-green);
+      color: var(--neon-green);
+      font-size: 1.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .people-btn:hover {
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+      transform: scale(1.1);
+    }
+
+    .people-btn:active {
+      transform: scale(0.95);
+    }
+
+    .people-count {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: var(--neon-green);
+      text-shadow: 0 0 20px var(--neon-green);
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .results {
+      text-align: center;
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, rgba(0, 245, 255, 0.1), rgba(255, 0, 255, 0.1));
+      border-radius: 20px;
+      padding: 30px 20px;
+      border: 2px solid;
+      border-image: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta)) 1;
+      margin-bottom: 20px;
+    }
+
+    .result-label {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 5px;
+    }
+
+    .result-amount {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: none;
+      filter: drop-shadow(0 0 20px rgba(0, 245, 255, 0.5));
+    }
+
+    .result-breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .breakdown-item {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+    }
+
+    .breakdown-label {
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .breakdown-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: var(--neon-yellow);
+      text-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+      margin-top: 5px;
+    }
+
+    .glow-line {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--neon-cyan), var(--neon-magenta), transparent);
+      margin: 25px 0;
+      box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    .reset-btn {
+      width: 100%;
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .reset-btn:hover {
+      border-color: var(--neon-magenta);
+      color: var(--neon-magenta);
+      box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+    }
+
+    /* Ambient background effects */
+    .bg-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .bg-glow-1 {
+      top: -100px;
+      right: -100px;
+      background: var(--neon-cyan);
+    }
+
+    .bg-glow-2 {
+      bottom: -100px;
+      left: -100px;
+      background: var(--neon-magenta);
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.5; }
+    }
+
+    .bg-glow {
+      animation: pulse 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow bg-glow-1"></div>
+  <div class="bg-glow bg-glow-2"></div>
+  
+  <div class="container">
+    <h1>✧ TIP SPLIT ✧</h1>
+    
+    <div class="card">
+      <div class="input-group">
+        <label>Bill Total</label>
+        <div class="input-wrapper">
+          <span>$</span>
+          <input type="number" id="billAmount" placeholder="0.00" inputmode="decimal">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Tip Percentage</label>
+        <div class="tip-buttons">
+          <button class="tip-btn" data-tip="10">10%</button>
+          <button class="tip-btn active" data-tip="15">15%</button>
+          <button class="tip-btn" data-tip="18">18%</button>
+          <button class="tip-btn" data-tip="20">20%</button>
+        </div>
+        <div class="custom-tip">
+          <label>Custom</label>
+          <input type="number" id="customTip" placeholder="25" inputmode="numeric">
+          <span style="position: static; color: var(--neon-magenta);">%</span>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>Split Between</label>
+        <div class="people-control">
+          <button class="people-btn" id="decreasePeople">−</button>
+          <span class="people-count" id="peopleCount">2</span>
+          <button class="people-btn" id="increasePeople">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="glow-line"></div>
+
+    <div class="card results">
+      <div class="result-card">
+        <div class="result-label">Each Person Pays</div>
+        <div class="result-amount" id="perPerson">$0.00</div>
+      </div>
+
+      <div class="result-breakdown">
+        <div class="breakdown-item">
+          <div class="breakdown-label">Tip Amount</div>
+          <div class="breakdown-value" id="tipAmount">$0.00</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="breakdown-label">Total w/ Tip</div>
+          <div class="breakdown-value" id="totalWithTip">$0.00</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn">Reset Calculator</button>
+  </div>
+
+  <script>
+    // State
+    let billAmount = 0;
+    let tipPercent = 15;
+    let people = 2;
+
+    // Elements
+    const billInput = document.getElementById('billAmount');
+    const customTipInput = document.getElementById('customTip');
+    const tipButtons = document.querySelectorAll('.tip-btn');
+    const peopleCountEl = document.getElementById('peopleCount');
+    const decreaseBtn = document.getElementById('decreasePeople');
+    const increaseBtn = document.getElementById('increasePeople');
+    const perPersonEl = document.getElementById('perPerson');
+    const tipAmountEl = document.getElementById('tipAmount');
+    const totalWithTipEl = document.getElementById('totalWithTip');
+    const resetBtn = document.getElementById('resetBtn');
+
+    // Calculate and update display
+    function calculate() {
+      const tipAmount = billAmount * (tipPercent / 100);
+      const totalWithTip = billAmount + tipAmount;
+      const perPerson = totalWithTip / people;
+
+      perPersonEl.textContent = `$${perPerson.toFixed(2)}`;
+      tipAmountEl.textContent = `$${tipAmount.toFixed(2)}`;
+      totalWithTipEl.textContent = `$${totalWithTip.toFixed(2)}`;
+
+      // Save to localStorage
+      localStorage.setItem('tipCalc', JSON.stringify({ billAmount, tipPercent, people }));
+    }
+
+    // Bill input handler
+    billInput.addEventListener('input', (e) => {
+      billAmount = parseFloat(e.target.value) || 0;
+      calculate();
+    });
+
+    // Tip button handlers
+    tipButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tipButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        tipPercent = parseInt(btn.dataset.tip);
+        customTipInput.value = '';
+        calculate();
+      });
+    });
+
+    // Custom tip handler
+    customTipInput.addEventListener('input', (e) => {
+      const val = parseInt(e.target.value) || 0;
+      if (val > 0) {
+        tipButtons.forEach(b => b.classList.remove('active'));
+        tipPercent = val;
+        calculate();
+      }
+    });
+
+    // People controls
+    decreaseBtn.addEventListener('click', () => {
+      if (people > 1) {
+        people--;
+        peopleCountEl.textContent = people;
+        calculate();
+      }
+    });
+
+    increaseBtn.addEventListener('click', () => {
+      if (people < 20) {
+        people++;
+        peopleCountEl.textContent = people;
+        calculate();
+      }
+    });
+
+    // Reset handler
+    resetBtn.addEventListener('click', () => {
+      billAmount = 0;
+      tipPercent = 15;
+      people = 2;
+      
+      billInput.value = '';
+      customTipInput.value = '';
+      peopleCountEl.textContent = '2';
+      
+      tipButtons.forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-tip="15"]').classList.add('active');
+      
+      calculate();
+    });
+
+    // Load saved state
+    const saved = localStorage.getItem('tipCalc');
+    if (saved) {
+      const data = JSON.parse(saved);
+      billAmount = data.billAmount || 0;
+      tipPercent = data.tipPercent || 15;
+      people = data.people || 2;
+      
+      billInput.value = billAmount || '';
+      peopleCountEl.textContent = people;
+      
+      tipButtons.forEach(b => {
+        b.classList.remove('active');
+        if (parseInt(b.dataset.tip) === tipPercent) {
+          b.classList.add('active');
+        }
+      });
+      
+      calculate();
+    }
+  </script>
+</body>
+</html>
